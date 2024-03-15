@@ -1,0 +1,22 @@
+{
+    "authors": [
+        {
+            "name": "marus0v"
+        }
+    ],
+    "name": "marus0v/lib-project",
+    "description": "lib test project",
+    "type": "project",
+    "require": {
+        "slim/slim": "^4.13",
+        "php-di/php-di": "^7.0"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "Marus0v\\LibProject\\": "src/"
+        }
+    }
+}
