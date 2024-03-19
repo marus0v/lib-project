@@ -7,7 +7,7 @@ require __DIR__ . '/../vendor/autoload.php';
 use Slim\Factory\AppFactory;
 use Slim\Routing\RouteContext;
 use DI\Container;
-// use Valitron\Validator;
+use Valitron\Validator;
 use App\Connection;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
@@ -61,48 +61,43 @@ $container->set('renderer', function () use ($container) {
         'flash' => $container->get('flash')->getMessages()
     ];
     $renderer = new \Slim\Views\PhpRenderer(__DIR__ . '/../templates', $templateVars);
-    $renderer->setLayout('layout.phtml');
+    $renderer->setLayout('index.phtml');
     return $renderer;
 });
 
-// Парсинг данных
-/* $document = new Document('https://litlife.club/', true);
+function parse(string $parse_url)
+{
+    ini_set("display_errors", 1);
+    error_reporting(E_ALL);
 
-$books = $document->find('.book');
+    // Подключаем библиотеку Simple HTML DOM Parser
+    require '../src/simple_html_dom.php';
 
-foreach($books as $book) {
-    echo $book->text(), "\n";
-} */
+    // URL страницы для парсинга
+    $url = $parse_url;
 
-ini_set("display_errors", 1);
-error_reporting(E_ALL);
+    // Получаем содержимое страницы
+    $html = file_get_html($url);
 
-// Подключаем библиотеку Simple HTML DOM Parser
-require '../src/simple_html_dom.php';
+    // Находим все карточки книг на странице
+    foreach($html->find('div.book.card') as $bookCard) {
+        // Извлекаем название книги
+        $title = $bookCard->find('h3 a', 0)->plaintext;
 
-// URL страницы для парсинга
-$url = 'https://litlife.club/popular_books/month';
+        // Извлекаем URL обложки книги
+        $imageURL = $bookCard->find('img', 0)->getAttribute('data-src');
 
-// Получаем содержимое страницы
-$html = file_get_html($url);
+        // Извлекаем писателя книги
+        $author = $bookCard->find('a.author.name', 0)->plaintext;
 
-// Находим все карточки книг на странице
-foreach($html->find('div.book.card') as $bookCard) {
-    // Извлекаем название книги
-    $title = $bookCard->find('h3 a', 0)->plaintext;
+        // Находим ссылки на жанры книги
+        $genreLinks = $bookCard->find('a[href^="https://litlife.club/genres/"]');
 
-    // Извлекаем URL обложки книги
-    $imageURL = $bookCard->find('img', 0)->getAttribute('data-src');
-
-    // Извлекаем писателя книги
-    $author = $bookCard->find('a.author.name', 0)->plaintext;
-
-    // Извлекаем жанры книги
-    $genres = [];
-    foreach($bookCard->find('div > div:nth-child(4) > a') as $genreElement) {
-        $genres[] = $genreElement->plaintext;
-        var_dump($genres);
-    }
+        // Извлекаем текст жанров
+        $genres = [];
+        foreach ($genreLinks as $genreLink) {
+            $genres[] = $genreLink->plaintext;
+        }
 
     // Выводим информацию о книге
     echo '<div>';
@@ -111,17 +106,39 @@ foreach($html->find('div.book.card') as $bookCard) {
     echo '<p>Жанры: ' . implode(', ', $genres) . '</p>';
     echo '<img src="' . $imageURL . '" alt="' . $title . '">';
     echo '</div>';
-}
 
-// Освобождаем ресурсы
-$html->clear();
-unset($html);
+
+    }
+
+    // Освобождаем ресурсы
+    $html->clear();
+    unset($html);
+    return true;
+}
 
 // ДОМАШНЯЯ СТРАНИЦА
 $app->get('/', function ($request, $response) {
-    //    return $this->get('renderer')->render($response, 'home.phtml');
-    // })->setName('home');
-        return $response->write('Welcome to Slim!');
+        return $this->get('renderer')->render($response, 'index.phtml');
+    })->setName('home');
+    //    return $response->write('Welcome to Slim!');
+    // });
+
+// ПАРСИМ
+$app->get('/parse', function ($request, $response) {
+    $validator = new Validator();
+    $parse_url = $request->getParsedBodyParam('parse_url');
+    $errors = $validator->validate($parse_url);
+    if (count($errors) === 0) {
+        parse($parse_url);
+        return $response->withRedirect('/', 302)
+                        ->get('flash')->addMessage('success', 'URL has been parsed successfully');
+    }
+    $params = [
+        'errors' => $errors,
+        'flash' => $flash
+    ];
+    $this->get('renderer')
+                ->render($response->withStatus(422), 'index.phtml', $params);
     });
 
 $app->run();
