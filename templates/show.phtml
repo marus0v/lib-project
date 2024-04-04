@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Slim test</title>
+  </head>
+  <body>
+    <a href="/users">К списку пользователей и поиску</a>
+    <h1>User id = <?= htmlspecialchars($user['id']) ?></h1>
+    <div>Nickname = <?= htmlspecialchars($user['name']) ?></div>
+    <div>Mail : <?= htmlspecialchars($user['e_mail']) ?></div>
+    <form action="/users/{id}/edit" method="get">
+      <input type="submit" value="Редактировать!" />
+    </form>
+  </body>
+</html>

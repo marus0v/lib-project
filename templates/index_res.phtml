@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Slim test</title>
+  </head>
+  <body>
+<a href="/users/new">Добавить пользователя</a>
+<form action="/users" method="get">
+  <input type="search" name="term" value="<?= htmlspecialchars($term) ?>" />
+  <input type="submit" value="Найти!" />
+</form>
+
+<ul>
+  <?php foreach ($users as $user): ?>
+    <li><div><a href="/users/<?= htmlspecialchars($user['id']) ?>"><?= htmlspecialchars($user['name']) ?></a></div></li>
+  <?php endforeach ?>
+</ul>
+
+
+<div>
+<a href="?page=<?= $page < 2 ? 1 : $page - 1 ?>">Prev</a> <a href="?page=<?= $page + 1 ?>">Next</a>
+</div>
+</body>
+</html>

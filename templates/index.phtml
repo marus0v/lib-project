@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru" class="h-100">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Библиотека</title>
+  </head>
+  <body>
+    <main>
+    <a href="/">Главная</a>
+    <form action="/parse" method="post">
+  <div>
+    <label>
+        Адрес для парса
+      <input type="text" name="parse_url" value="<?= htmlspecialchars($parse_url) ?>">
+    </label>
+    <?php if (isset($errors['parse_url'])): ?>
+      <div><?= $errors['parse_url'] ?></div>
+    <?php endif ?>
+  </div>
+    <input type="submit" value="Parse!">
+</form>
+    </main>
+  </body>
+</html>

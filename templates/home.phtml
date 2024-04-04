@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru" class="h-100">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Библиотека</title>
+  </head>
+  <body>
+    <main>
+    <a href="/">Главная</a>
+<!--<form action="/users" method="get">
+  <input type="search" name="term" value="<?= htmlspecialchars($term) ?>" />
+  <input type="submit" value="Найти!" />
+</form> -->
+
+<!-- <ul>
+  <?php foreach ($users as $user): ?>
+    <li><div><a href="/users/<?= htmlspecialchars($user['id']) ?>"><?= htmlspecialchars($user['name']) ?></a></div></li>
+  <?php endforeach ?>
+</ul> 
+
+
+<div>
+<a href="?page=<?= $page < 2 ? 1 : $page - 1 ?>">Prev</a> <a href="?page=<?= $page + 1 ?>">Next</a>
+</div> -->
+    </main>
+  <!-- <main class="flex-grow-1">
+      <div class="container my-3">
+        <div class="p-5 mx-auto col-lg-8 bg-body-tertiary border rounded-3">
+          <h1 class="display-3">Библиотека</h1>
+          <p class="lead">Тра-та-та</p>
+          <form class="row mb-3" action="<?= $router->urlFor('urls.store') ?>" method="post" required>
+            <div class="col-8">
+              <input
+                type="text"
+                name="url[name]"
+                value="<?= htmlspecialchars($url ?? '') ?>"
+                class="form-control form-control-lg
+                    <?php if (isset($errors['url_name'])) : ?>
+                      is-invalid
+                    <?php endif ?>"
+                aria-describedby="validationFeedback"
+                placeholder="https://www.example.com">
+              <?php if (isset($errors['url_name'])) : ?>
+                <div id="validationFeedback" class="invalid-feedback"><?= $errors['url_name'][0] ?></div>
+              <?php endif ?>
+            </div>
+            <div class="col-4">
+              <input type="submit" class="btn btn-primary btn-lg px-5 text-uppercase" value="Проверить">
+            </div>
+          </form>
+        </div>
+      </div>
+    </main> -->
+  </body>
+</html>

@@ -1,0 +1,25 @@
+<a href="/users">Постраничный список пользователей</a>
+
+<form action="/users/<?= htmlspecialchars($user['id']) ?>"" method="post">
+  <input type="hidden" name="_METHOD" value="PATCH">
+  <div>
+    <label>
+        Имя
+      <input type="text" name="user[name]" value="<?= htmlspecialchars($user['name']) ?>">
+    </label>
+    <?php if (isset($errors['name'])): ?>
+      <div><?= $errors['name'] ?></div>
+    <?php endif ?>
+  </div>
+  <div>
+    <label>
+        Email
+      <input type="email" required name="user[email]" value="<?= htmlspecialchars($user['email']) ?>">
+    </label>
+    <?php if (isset($errors['email'])): ?>
+      <div><?= $errors['email'] ?></div>
+    <?php endif ?>
+  </div>
+  <div>
+  <input type="submit" value="Update">
+</form>
