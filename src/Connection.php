@@ -35,7 +35,7 @@ final class Connection
             $params['password']
         );
 
-        var_dump($params);
+        // var_dump($params);
 
         $pdo = new \PDO($conStr);
         $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
