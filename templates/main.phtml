@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru" class="h-100">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Библиотека</title>
+  </head>
+  <body>
+    <main>
+    <a href="/">Главная</a>
+    <form action="/books" method="get">
+  <div>
+    <label>
+        Что ищем?
+      <input type="search" name="term" value="<?= htmlspecialchars($term) ?>">
+    </label>
+    <?php if (isset($errors['term'])): ?>
+      <div><?= $errors['term'] ?></div>
+    <?php endif ?>
+  </div>
+    <input type="submit" value="Find!">
+</form>
+<table>
+  <?php foreach ($books as $book): ?>
+    <tr>
+      <td>
+      <div><img class="cover" src="<?= htmlspecialchars($book['image']) ?>" alt="<?= htmlspecialchars($book['title']) ?>" /></div>
+    </td>
+    <td>
+      <h1><?= htmlspecialchars($book['title']) ?></h1>
+      <div><?= htmlspecialchars($book['author']) ?></div>
+      <div><?= htmlspecialchars($book['genres']) ?></div>
+  </td>
+  </tr>
+  <?php endforeach ?>
+</table>
+<div>
+<a href="?page=<?= $page < 2 ? 1 : $page - 1 ?>">Prev</a> <a href="?page=<?= $page + 1 ?>">Next</a>
+</div>
+    </main>
+  </body>
+</html>
